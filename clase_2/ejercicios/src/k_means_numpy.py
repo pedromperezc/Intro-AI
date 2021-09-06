@@ -17,17 +17,17 @@ def distancia_centroide(x, c):
 def k_means(x, n_cluster):
     idx = np.random.randint(0, len(x), n_cluster)
     centroid = x[idx]
-    MAX_ITER = 10000000
-    threshold = 0.000001
+    MAX_ITER = 10000
+    threshold = 0.0001
     distancia_entre_centroides_ant = 0
     for i in range(MAX_ITER):
         centroid_ant = centroid
-        centroid = k_means_loop(x, centroid, n_cluster)
+        centroid, indice = k_means_loop(x, centroid, n_cluster)
         distancia_entre_centroides = np.sum(distancia_centroide(centroid_ant, centroid))
         if abs(distancia_entre_centroides_ant - distancia_entre_centroides) <= threshold:
             break
         distancia_entre_centroides_ant = distancia_entre_centroides
-    return centroid
+    return centroid, indice
 
 def k_means_loop(x, centroid, n):
     distancia = distancia_centroide(x, centroid)
@@ -35,13 +35,14 @@ def k_means_loop(x, centroid, n):
     for i in range(n):
         mask = [centroid_cercano == i]
         centroid[i] = np.mean(np.compress(mask[0], x, axis=0), axis=0)
-    return centroid
+    return centroid, centroid_cercano
 
 n=1000
 separacion = 10
 data = Syntethic(n, separacion)
 x, y = data.crear_cluster()
-print (k_means(x, 2))
+centroide, indice = k_means(x, 2)
+print(centroide)
 
 #scikit-learn
 kmeans = KMeans(n_clusters=2, random_state=0).fit(x)
