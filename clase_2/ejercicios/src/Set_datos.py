@@ -23,9 +23,7 @@ class Setdatos(object):
 
         else:
             archivo = pd.read_csv(self.ruta, sep=",")
-            self.array = np.array(archivo.to_numpy(),
-                                  dtype=[('userId', np.int64), ('movieId', np.int64), ('rating', np.float64),
-                                         ('timestamp', np.int64)])
+            self.array = np.array(archivo.to_numpy(), dtype=object)
             with open('archivo.pkl', 'wb') as f:
                 pickle.dump(self.array, f)
 
@@ -36,4 +34,4 @@ class Setdatos(object):
 os.chdir("datasets")
 ruta = "ratings.csv"
 archivo1 = Setdatos(ruta)
-print(archivo1.get_array())
+
