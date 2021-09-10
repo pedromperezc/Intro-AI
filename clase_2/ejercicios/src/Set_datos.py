@@ -1,8 +1,7 @@
 import numpy as np
 import pickle
 import os
-import psutil
-import pandas as pd
+
 
 
 class Setdatos(object):
@@ -44,11 +43,10 @@ class Setdatos(object):
         data_csv.close()
         return data
 
-    def get_first_five_rows(self, fila):
+    def get_rows(self, fila):
         return self.array[0:fila]
 
 os.chdir("datasets")
 ruta = "ratings.csv"
 archivo1 = Setdatos(ruta)
 
-print(archivo1.get_first_five_rows(20))
