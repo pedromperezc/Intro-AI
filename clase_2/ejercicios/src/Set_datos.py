@@ -3,7 +3,6 @@ import pickle
 import os
 
 
-
 class Setdatos(object):
     instance = None
 
@@ -45,8 +44,3 @@ class Setdatos(object):
 
     def get_rows(self, fila):
         return self.array[0:fila]
-
-os.chdir("datasets")
-ruta = "ratings.csv"
-archivo1 = Setdatos(ruta)
-
