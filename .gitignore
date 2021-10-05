@@ -1,2 +1,12 @@
 *.csv
 *.pkl
+!/clase_2/.ipynb_checkpoints/
+!/ratings.csv
+!/archivo.pkl
+!/ratings.csv
+/archivo.pkl
+/clase_2/.ipynb_checkpoints/PCA - Fashion MNIST-checkpoint.ipynb
+/clase_2/.ipynb_checkpoints/PCA en NumPy-checkpoint.ipynb
+/ratings.csv
+/clase_2/.ipynb_checkpoints/Untitled-checkpoint.ipynb
+/TP1 INTEGRADOR/.ipynb_checkpoints/TP Integrador-checkpoint.ipynb

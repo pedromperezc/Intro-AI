@@ -1,12 +1,10 @@
-from clase_3.ejercicios.models import LinearRegressionNumpy
 import numpy as np
-from sklearn import metrics, linear_model
 import pandas as pd
 import gradient_descent
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-
+from models import LinearRegressionNumpy
 
 x_data = np.linspace(0,1,40)
 noise = 1*np.random.uniform(  size = 40)
@@ -40,9 +38,9 @@ pipe.fit(x,y)
 X_expanded = np.hstack((x, np.ones((len(x),1))))
 
 
-lr_1 = 0.0005
+lr_1 = 0.0001
 # Set up the n° of epochs
-amt_epochs_1 = 10000
+amt_epochs_1 = 100
 
 
 W_manual = gradient_descent.gradient_descent(X_expanded, y, lr=lr_1, amt_epochs=amt_epochs_1)
@@ -70,5 +68,7 @@ print (W_manual)
 
 import os
 os.getcwd()
+
+
 
 
