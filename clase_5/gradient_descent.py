@@ -42,7 +42,7 @@ def gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
         grad_mul = -2/(n) * grad_sum  # 1xm
         gradient = np.transpose(grad_mul).reshape(-1, 1)  # mx1
 
-        W, states = momentum_update(W, gradient, states, 0.005, lr)
+        W, states = momentum_update(W, gradient, states, 0.7, lr)
     return W
 
 
@@ -88,6 +88,7 @@ def mini_batch_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
     b = 16
     n = X_train.shape[0]
     m = X_train.shape[1]
+    states = np.zeros((m,1))
 
     # initialize random weights
     W = np.random.randn(m).reshape(m, 1)
@@ -110,6 +111,6 @@ def mini_batch_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
             grad_mul = -2/n * grad_sum  # 1xm
             gradient = np.transpose(grad_mul).reshape(-1, 1)  # mx1
 
-            W = W - (lr * gradient)
-
+            # W = W - (lr * gradient)
+            W, states = momentum_update(W, gradient, states, 0., lr)
     return W
