@@ -16,11 +16,11 @@ def momentum_update(W, grads, states, hyper_param, lr):
     W_ant = W
     W = W + hyper_param * states - lr * grads
 
-    states = W - W_ant
+    states = W - W_antt
     return W, states
 
 
-def gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
+def gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100, momentum_rate=0):
     """
     shapes:
         X_t = nxm
@@ -42,11 +42,14 @@ def gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
         grad_mul = -2/(n) * grad_sum  # 1xm
         gradient = np.transpose(grad_mul).reshape(-1, 1)  # mx1
 
-        W, states = momentum_update(W, gradient, states, 0.7, lr)
+        if momentum_rate > 0:
+            W, states = momentum_update(W, gradient, states, momentum_rate, lr)
+        else:
+            W = W - (lr * gradient)
     return W
 
 
-def stochastic_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
+def stochastic_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100, momentum_rate=0):
     """
     shapes:
         X_t = nxm
@@ -73,12 +76,14 @@ def stochastic_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
             grad_mul = -2/n * grad_sum  # 2x1
             gradient = np.transpose(grad_mul).reshape(-1, 1)  # 2x1
 
-            #W = W - (lr * gradient)
-            W, states = momentum_update(W, gradient, states, 0.7, lr)
+            if momentum_rate > 0:
+                W, states = momentum_update(W, gradient, states, momentum_rate, lr)
+            else:
+                W = W - (lr * gradient)
     return W 
 
 
-def mini_batch_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
+def mini_batch_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100,momentum_rate=0):
     """
     shapes:
         X_t = nxm
@@ -111,6 +116,8 @@ def mini_batch_gradient_descent(X_train, y_train, lr=0.01, amt_epochs=100):
             grad_mul = -2/n * grad_sum  # 1xm
             gradient = np.transpose(grad_mul).reshape(-1, 1)  # mx1
 
-            # W = W - (lr * gradient)
-            W, states = momentum_update(W, gradient, states, 0., lr)
+            if momentum_rate > 0:
+                W, states = momentum_update(W, gradient, states, momentum_rate, lr)
+            else:
+                W = W - (lr * gradient)
     return W

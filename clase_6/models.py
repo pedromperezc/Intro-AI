@@ -54,7 +54,7 @@ def cost_entropy(Y, A, n):
 
 
 def initialize(dim):
-    w = np.random.randn(dim, 1)
+    w = np.zeros((dim, 1))
     b = 0
     return w, b
 
@@ -63,17 +63,17 @@ def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
-def momentum_update(W, b, dw, db, states, lr):
+def momentum_update(W, b, dw, db, states, lr, momentum_rate):
     # hyper-param typical values: learning_rate=0.01, momentum=0.9
     W_ant = W
     b_ant = b
-    W = W + 0.9 * states[0] - lr * dw
-    b = b + 0.9 * states[1] - lr * db
+    W = W + momentum_rate * states[0] - lr * dw
+    b = b + momentum_rate * states[1] - lr * db
     states = [W - W_ant, b - b_ant]
     return W, b, states
 
 
-class LogisticRegression(BaseModel):
+class LogisticRegressionNumpy(BaseModel):
 
     def fit(self, X_train, y_train, lr, batch, epochs, momentum_rate):
         w, b = initialize(X_train.shape[1])
@@ -102,17 +102,25 @@ class LogisticRegression(BaseModel):
 
                 # np.sum(error * batch_X, axis=0)
 
-                cost = cost_entropy(batch_y, A, n)
 
+                cost = cost_entropy(batch_y, A, n)
+                print (cost)
                 dz = A - batch_y
                 dw = (1 / batch_size) * np.dot(batch_X.T, dz)
                 db = (1 / batch_size) * np.sum(dz)
 
                 if momentum_rate > 0:
-                    w, b, states = momentum_update(w, b, dw, db, states, lr)
+                    w, b, states = momentum_update(w, b, dw, db, states, lr, momentum_rate)
                 else:
                     w = w - lr * dw
                     b = b - lr * db
         self.coef_ = w
         self.intercept_ = b
 
+    def predict(self, X):
+        p = sigmoid(X @ self.coef_ + self.intercept_)
+        mask_true = p >= 0.5
+        mask_false = p < 0.5
+        p[mask_true] = 1
+        p[mask_false] = 0
+        return p
